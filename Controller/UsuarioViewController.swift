@@ -32,6 +32,13 @@ class UsuarioViewController: UIViewController {
     let path = CGMutablePath()
     let coordenadaInicial: CGPoint = CGPoint(x: 190, y: 460)
     
+    // Coordenadas Eventos
+    var coordenadasEventos: [CGPoint] = [CGPoint(x: 0, y: 0),
+                                         CGPoint(x: 0, y: 0),
+                                         CGPoint(x: 0, y: 0),
+                                         CGPoint(x: 0, y: 0),
+                                         CGPoint(x: 0, y: 0)]
+    
     // Estado da Conexão
     var genial: Bool = false
     
@@ -73,23 +80,33 @@ class UsuarioViewController: UIViewController {
         scrollView.bringSubviewToFront(botaoGenial)
         player.play()
         
+        // Prioridade de Eventos na Tela
         for evento in usuario.eventos {
             scrollView.bringSubviewToFront(evento.botaoEvento)
         }
-        
+        // Botao Eventos
+        for evento in usuario.eventos {
+            if evento.flag == true {
+                atualizaViewEvento(evento: evento)
+            }
+        }
+
         super.viewDidLoad()
-        
     }
+
     func desenhaJornada(eventos: [Evento]) {
         path.move(to: coordenadaInicial)
         
         // Geração de Eventos em Sequencia
         for i in 0...eventos.count-1 {
+            
             // Posições Relativas
             let posX: Double = 160
             let posY: Double = 460 + 200*Double(i)
             let dimensao: Double = 60
             
+            // Atribuicao de Coordenada
+            coordenadasEventos[i] = CGPoint(x: posX, y: posY)
             // Botao
             let botao = eventos[i].botaoEvento
             botao.frame.origin = CGPoint(x: posX, y: posY)
@@ -122,5 +139,12 @@ class UsuarioViewController: UIViewController {
             genial = true
         }
         print("Button tapped")
+    }
+    func atualizaViewEvento(evento: Evento) {
+        evento.viewImagem.frame.origin = coordenadasEventos[evento.index]
+        evento.labelDescricao.frame.origin = coordenadasEventos[evento.index]
+        scrollView.addSubview(evento.viewImagem)
+        scrollView.addSubview(evento.labelDescricao)
+        print("foi")
     }
 }

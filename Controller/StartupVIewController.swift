@@ -74,9 +74,11 @@ class StartupViewController: UIViewController {
         scrollView.bringSubviewToFront(botaoGenial)
         player.play()
         
+        // Prioridades na Tela
         for evento in startup.eventos {
             scrollView.bringSubviewToFront(evento.botaoEvento)
         }
+        
         
         super.viewDidLoad()
         
